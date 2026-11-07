@@ -1,4 +1,4 @@
-# Ocultamiento y recuperación de mensajes mediante permutación espectral
+#  Ocultamiento y recuperación de mensajes mediante permutación espectral
 
 Proyecto de **Análisis de Señales** · Universidad Militar Nueva Granada (UMNG) · RA 6.1
 
@@ -14,9 +14,8 @@ Ocultar cinco mensajes de audio (**Secret**) reorganizando sus coeficientes comp
 ## 📁 Estructura del repositorio
 
 ```
-├── 01_Imitation.ipynb            # Imitation: permutación espectral, audios codificados y claves
-├── 02_Reverse_FFT_GitHub.ipynb   # Reverse (código de la profesora, sin modificar)
-├── 03_Metricas.ipynb             # SNR y correlación de Pearson
+├── 01_Imitation_Metricas.ipynb   # Imitation (permutación espectral, encoded y claves) + cálculo de SNR y Pearson
+├── Reverse_FFT_GitHub.ipynb      # Reverse (código de la profesora, sin modificar)
 ├── audios/                       # target.wav y secret1..5.wav (originales suministrados)
 ├── encoded/                      # encoded_1..5.wav
 ├── keys/                         # FFT_key_1..5.csv
@@ -25,11 +24,11 @@ Ocultar cinco mensajes de audio (**Secret**) reorganizando sus coeficientes comp
 └── metricas.csv                  # tabla de resultados
 ```
 
-## Cómo ejecutar
+##  Cómo ejecutar
 
-1. Abrir `01_Imitation.ipynb` y ejecutarlo completo. Genera `encoded/encoded_i.wav` y `keys/FFT_key_i.csv` para los cinco secretos.
-2. El código Reverse de la profesora lee `encoded.wav` y `FFT_key.csv` con nombres fijos. Para cada secreto *i* (1 a 5): copiar `encoded/encoded_i.wav` como `encoded.wav` y `keys/FFT_key_i.csv` como `FFT_key.csv`, ejecutar `02_Reverse_FFT_GitHub.ipynb` y guardar la salida `recovered.wav` como `recovered/recovered_i.wav`.
-3. Ejecutar `03_Metricas.ipynb`, que compara `audios/secret{i}.wav` con `recovered/recovered_{i}.wav` y escribe `metricas.csv`.
+1. Abrir `01_Imitation_Metricas.ipynb` y ejecutar la **Parte I (Imitation)**. Genera `encoded/encoded_i.wav` y `keys/FFT_key_i.csv` para los cinco secretos.
+2. El código Reverse de la profesora lee `encoded.wav` y `FFT_key.csv` con nombres fijos. Para cada secreto *i* (1 a 5): copiar `encoded/encoded_i.wav` como `encoded.wav` y `keys/FFT_key_i.csv` como `FFT_key.csv`, ejecutar `Reverse_FFT_GitHub.ipynb` y guardar la salida `recovered.wav` como `recovered/recovered_i.wav`.
+3. Volver a `01_Imitation_Metricas.ipynb` y ejecutar la **Parte III (Métricas)**, que compara `audios/secret{i}.wav` con `recovered/recovered_{i}.wav` y escribe `metricas.csv`.
 
 Dependencias: `numpy`, `scipy`, `matplotlib`, `pandas` (y `tabulate` para imprimir la tabla).
 
@@ -58,7 +57,7 @@ El Reverse hace `X_rec[K] = X_enc`, la inversa exacta de `E = S[K]`.
 
 La correlación vale 1 hasta el duodécimo decimal en los cinco casos.
 
-## Análisis
+##  Análisis
 
 ### Dominio temporal
 
@@ -105,4 +104,4 @@ La permutación en sí es exactamente reversible: cada coeficiente solo cambia d
 
 ##  Créditos
 
-El código Reverse (`02_Reverse_FFT_GitHub.ipynb`) fue suministrado por la profesora Dora María Ballesteros Larrotta, del libro *Análisis de Señales Utilizando Python* (UMNG), y se incluye sin modificaciones.
+El código Reverse (`Reverse_FFT_GitHub.ipynb`) fue suministrado por la profesora Dora María Ballesteros Larrotta, del libro *Análisis de Señales Utilizando Python* (UMNG), y se incluye sin modificaciones.
