@@ -46,7 +46,7 @@ Todos los audios están a 44 100 Hz, son mono y tienen 383 184 muestras (8,69 s)
 
 El Reverse hace `X_rec[K] = X_enc`, la inversa exacta de `E = S[K]`.
 
-## 📊 Resultados
+##  Resultados
 
 | Mensaje secreto | SNR (dB) | Correlación de Pearson |
 |---|---:|---:|
