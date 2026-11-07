@@ -14,21 +14,25 @@ Ocultar cinco mensajes de audio (**Secret**) reorganizando sus coeficientes comp
 ## 📁 Estructura del repositorio
 
 ```
-├── 01_Imitation_Metricas.ipynb   # Imitation (permutación espectral, encoded y claves) + cálculo de SNR y Pearson
-├── Reverse_FFT_GitHub.ipynb      # Reverse (código de la profesora, sin modificar)
-├── audios/                       # target.wav y secret1..5.wav (originales suministrados)
-├── encoded/                      # encoded_1..5.wav
-├── keys/                         # FFT_key_1..5.csv
-├── recovered/                    # recovered_1..5.wav
-├── imagenes/                     # gráficas usadas en este README
-└── metricas.csv                  # tabla de resultados
+├── README.md
+└── resultados/
+    ├── Imitation_Metricas.ipynb      # Imitation (permutación espectral, encoded y claves) + cálculo de SNR y Pearson
+    ├── Reverse_FFT_GitHub.ipynb      # Reverse (código de la profesora, sin modificar)
+    ├── audios/                       # target.wav y secret1..5.wav (originales suministrados)
+    ├── encoded/                      # encoded_1..5.wav
+    ├── keys/                         # FFT_key_1..5.csv
+    ├── recovered/                    # recovered_1..5.wav
+    ├── imagenes/                     # gráficas usadas en este README
+    └── metricas.csv                  # tabla de resultados
 ```
 
 ##  Cómo ejecutar
 
-1. Abrir `01_Imitation_Metricas.ipynb` y ejecutar la **Parte I (Imitation)**. Genera `encoded/encoded_i.wav` y `keys/FFT_key_i.csv` para los cinco secretos.
+Los notebooks usan rutas relativas, por lo que deben ejecutarse **desde la carpeta `resultados/`**.
+
+1. Abrir `Imitation_Metricas.ipynb` y ejecutar la **Parte I (Imitation)**. Genera `encoded/encoded_i.wav` y `keys/FFT_key_i.csv` para los cinco secretos.
 2. El código Reverse de la profesora lee `encoded.wav` y `FFT_key.csv` con nombres fijos. Para cada secreto *i* (1 a 5): copiar `encoded/encoded_i.wav` como `encoded.wav` y `keys/FFT_key_i.csv` como `FFT_key.csv`, ejecutar `Reverse_FFT_GitHub.ipynb` y guardar la salida `recovered.wav` como `recovered/recovered_i.wav`.
-3. Volver a `01_Imitation_Metricas.ipynb` y ejecutar la **Parte III (Métricas)**, que compara `audios/secret{i}.wav` con `recovered/recovered_{i}.wav` y escribe `metricas.csv`.
+3. Volver a `Imitation_Metricas.ipynb` y ejecutar la **Parte III (Métricas)**, que compara `audios/secret{i}.wav` con `recovered/recovered_{i}.wav` y escribe `metricas.csv`.
 
 Dependencias: `numpy`, `scipy`, `matplotlib`, `pandas` (y `tabulate` para imprimir la tabla).
 
@@ -61,31 +65,31 @@ La correlación vale 1 hasta el duodécimo decimal en los cinco casos.
 
 ### Dominio temporal
 
-![Señales originales](imagenes/Grafica_tiempo.png)
+![Señales originales](resultados/imagenes/Grafica_tiempo.png)
 
 El Target tiene ráfagas de actividad separadas por pausas largas casi en silencio y su amplitud llega a unos 0,68. El Secret 1 es más continuo, con actividad sostenida entre aproximadamente 0,6 s y 8,7 s, pausas cortas y una amplitud máxima menor (≈ 0,4). Es decir, difieren en amplitud, en la cantidad y duración de las pausas y en la distribución de la actividad en el tiempo.
 
 ### Dominio espectral
 
-![Espectros de magnitud](imagenes/Grafica_espectro.png)
+![Espectros de magnitud](resultados/imagenes/Grafica_espectro.png)
 
 En ambas señales la energía se concentra por debajo de ~2 kHz y el resto del espectro es mucho menor, como corresponde a voz. El pico principal del Target está en ≈ 639 Hz (magnitud ≈ 668), mientras que el del Secret 1 está en ≈ 135 Hz y es casi el doble de grande (≈ 1282). Los picos principales están, por tanto, en frecuencias distintas.
 
 ### Espectro reorganizado
 
-![Espectro original y reorganizado](imagenes/Grafica_espectro_ordenado.png)
+![Espectro original y reorganizado](resultados/imagenes/Grafica_espectro_ordenado.png)
 
 El espectro reorganizado del Secret 1 presenta sus picos en la zona de baja frecuencia donde el Target tiene los suyos, con su coeficiente mayor cerca de 640 Hz. Esto ocurre porque la permutación asigna posiciones por **rango**: el coeficiente de mayor magnitud del Secret va a la posición del mayor del Target, el segundo mayor a la del segundo mayor del Target, y así sucesivamente. Los valores son los mismos coeficientes del Secret (el máximo sigue siendo ≈ 1282, mayor que el del Target), pero sus posiciones siguen el patrón de magnitudes del Target.
 
 ### Señal codificada
 
-![Señal codificada](imagenes/Grafica_encoded.png)
+![Señal codificada](resultados/imagenes/Grafica_encoded.png)
 
 Al mover los coeficientes, cada uno queda en una frecuencia distinta a la original con su fase, así que se pierde la relación entre fases que determinaba cuándo ocurría cada sonido. La señal Encoded tiene actividad distribuida en toda su duración, sin las pausas del original, y se percibe como ruido.
 
 ### Calidad de la recuperación
 
-![SNR por mensaje](imagenes/SNR_por_mensaje.png)
+![SNR por mensaje](resultados/imagenes/SNR_por_mensaje.png)
 
 - **Mejor recuperación:** Secret 1, con 152,42 dB. Le siguen de cerca Secret 3 (152,41), Secret 4 (152,37) y Secret 5 (152,26), y el más bajo es Secret 2 (152,21).
 - **¿Son similares los cinco?** Sí. La diferencia entre el mejor y el peor es de unos 0,2 dB, por lo que ninguno presenta una diferencia considerable. Con una variación tan pequeña no se puede atribuir a una causa clara; es coherente con ruido numérico de la misma naturaleza en los cinco casos, cuyo nivel relativo depende ligeramente de cada señal.
